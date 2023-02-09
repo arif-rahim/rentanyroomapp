@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "HomeyMobileApp",
+    "slug": "homey",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/images/icon.png",
+    "splash": {
+      "image": "./src/assets/images/splash.jpg",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.webpenter.HomeyMobileApp",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.webpenter.HomeyMobileApp",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./src/assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8ae11840-13fa-4b94-9548-b28d24e81b45"
+      }
+    },
+    "owner": "arif710"
+  }
+}
