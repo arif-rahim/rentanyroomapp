@@ -6,12 +6,14 @@ import { Avatar } from 'react-native-paper';
 const TestimonialItem = ({ item }) => { 
     return (
         <View style={styles.container} >
-            <Text style={styles.description}>{ item.bio }.</Text>
+            
             <Avatar.Image style={styles.testimonialThumb} size={42} source={{ uri: item.photo }} />
             <View style={styles.autherInfo}>
                 <Text style={{ fontWeight: 'bold' }}>{ item.name } </Text>
                 <Text style={{ fontStyle: 'italic' }}>Homey Host</Text>
             </View>
+            {item.bio ?
+            <Text style={styles.description}>{ item.bio }.</Text>:''}
         </View>
     );
 }

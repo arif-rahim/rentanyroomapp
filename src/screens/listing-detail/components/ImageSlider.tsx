@@ -8,7 +8,7 @@ import {
     ImageBackground,
     Animated,
     useWindowDimensions,
-    Pressable
+    Pressable,ActivityIndicator
 } from "react-native";
 import ImageViewModal from "../../../modals/ImageViewModal";
 
@@ -50,13 +50,15 @@ const ImageSlider = (item) => {
                                 style={{ width: windowWidth, height: 280 }}
                                 key={imageIndex}
                             >
+                                {image?
                                 <ImageBackground source={{ uri: image }} style={styles.card}>
-                                    <View style={styles.textContainer}>
+                                     {/*<View style={styles.textContainer}>
                                         <Text style={styles.infoText}>
                                             {"Image - " + imageIndex}
-                                        </Text>
-                                    </View>
-                                </ImageBackground>
+                                        </Text> 
+                                    </View>*/}
+                                </ImageBackground>: <ActivityIndicator size="large" color="#0c9" />
+                                }
                             </View>
                             <ImageViewModal _image={image} modalVisible={modalVisible} setModalVisible={setModalVisible} />
                         </Pressable>

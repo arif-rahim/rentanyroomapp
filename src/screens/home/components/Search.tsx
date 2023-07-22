@@ -14,13 +14,13 @@ const SearchBox = ({navigation}) => {
 
     return (
         <ImageBackground
-            source={{ uri: 'https://images.unsplash.com/photo-1581869054729-d43f3ebe3b8d?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374' }}
+            source={{ uri: 'https://www.rentanyroom.com/wp-content/uploads/2023/06/bedroom-1872196_1920.jpg' }}
             style={styles.imageBackground}
             resizeMode='cover'
         >
             <View style={styles.layer} />
-            <Text style={styles.heading}>Book & Experience Amazing Places</Text>
-            <Text style={styles.text}>WordPress Theme For Booking and Rental</Text>
+            <Text style={styles.heading}>Rent any room anywhere in the world</Text>
+            <Text style={styles.text}>your premier destination for short to medium term stays and a wide range of rental options</Text>
             <FontAwesome.Button
                 name="search"
                 style={styles.searchButton} size={16}

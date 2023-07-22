@@ -34,7 +34,7 @@ const Carousel = ({
 
                 <FlatList data={data}
                     //ref={(flatList) => { this.flatList = flatList }}
-                    ListHeaderComponent={HeaderComponent}
+                    ListHeaderComponent={HeaderComponent?<HeaderComponent data={data}/>:null}
                     keyExtractor={(item) => 'key' + item.id}
                     horizontal={horizontal}
                     pagingEnabled={pagingEnabled}

@@ -38,7 +38,7 @@ const ReservationList = ({ item, navigation }) => {
 
             <DataTable.Row>
                 <DataTable.Cell>Address</DataTable.Cell>
-                <DataTable.Cell numeric textStyle={{ textAlign: 'right' }}>{item.photo}</DataTable.Cell>
+                <DataTable.Cell numeric textStyle={{ textAlign: 'right' }}>{item.title}{item.address}</DataTable.Cell>
             </DataTable.Row>
 
             <DataTable.Row>

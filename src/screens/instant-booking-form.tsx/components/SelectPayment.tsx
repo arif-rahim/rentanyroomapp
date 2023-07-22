@@ -7,7 +7,7 @@ import Colors from "../../../constants/Colors";
 
 const SelectPayment = (props) => {
     const [checked, setChecked] = useState('');
-    console.log(checked)
+ 
     return (
         <View style={ styles.container }>
             <View style={ styles.form }>
@@ -25,18 +25,18 @@ const SelectPayment = (props) => {
                 <View style={ styles.space } />
 
                 <View style={ styles.paymentCard }>
-                    <View style={[ styles.paymentMethod, styles.borderRadiusTop ]}>
+                    {/* <View style={[ styles.paymentMethod, styles.borderRadiusTop ]}>
                         <RadioButton 
                             value="paypal"
                             status={checked === 'paypal' ? 'checked' : 'unchecked'}
                             onPress={() => { setChecked('paypal') }} 
                         />
                         <Text>Paypal <FontAwesome name="cc-paypal" size={24} /></Text>
-                    </View>
+                    </View> */}
                     <View style={[ styles.paymentMethod, styles.borderRadiusBottom ]}>
                         <RadioButton 
                             value="stripe"
-                            status={checked === 'stripe' ? 'checked' : 'unchecked'}
+                            status={'checked'}
                             onPress={() => { setChecked('stripe') }} 
                         />
                         <Text>Stripe <FontAwesome name="cc-stripe" size={24} /></Text>

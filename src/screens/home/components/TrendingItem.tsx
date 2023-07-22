@@ -1,16 +1,26 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
-
+import { View, Text, Image, StyleSheet, Dimensions,TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 const { width, height } = Dimensions.get('window');
 
-const TrendingItem = ({ item={ url: '', name: '' } }) => {
+const TrendingItem = ({ item={ url: '', name: '' }}) => {
+    const navigation = useNavigation();
+    
     return (
+        <TouchableOpacity onPress={() => {  navigation.navigate('SearchResultPage', { 
+            listings: {keyword: '',
+                arrive: '',
+                depart: '',
+                guest: '',state: item.name,
+            },
+        });}}>
         <View style={styles.imageCard}>
             <Image style={styles.image} source={{ uri: item.url }} />
             <View style={styles.imageTitle}>
                 <Text style={styles.title}> { item.name } </Text>
             </View>
         </View>
+        </TouchableOpacity>
     );
 }
 
@@ -35,7 +45,9 @@ const styles = StyleSheet.create({
         height: height / 1.8,
         padding: 10,
         justifyContent: 'flex-end',
-        borderRadius: 10
+        borderRadius: 10,
+        resizeMode: 'cover',
+        
     },
     imageTitle: {
         width: width - 20,

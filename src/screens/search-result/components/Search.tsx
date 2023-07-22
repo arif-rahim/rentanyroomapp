@@ -7,7 +7,7 @@ import SearchModal from '../../../modals/SearchModal';
 
 const { width, height } = Dimensions.get('window');
 
-const SearchBox = () => {
+const SearchBox = ({navigation}) => {
     const [modalVisible, setModalVisible] = useState(false);
     // const [searchQuery, setSearchQuery] = React.useState('');
     // const onChangeSearch = (query) => setSearchQuery(query);
@@ -19,7 +19,7 @@ const SearchBox = () => {
                 style={styles.searchButton} size={16}
                 color='grey'
                 onPress={() => setModalVisible(true)}
-            >
+            > 
                 <Text
                     style={{
                         color: 'grey',
@@ -37,7 +37,7 @@ const SearchBox = () => {
                 style = {{ marginLeft: 30, marginRight: 30 }}
                 onTouchStart = { () => setModalVisible(true) }
             /> */}
-            <SearchModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+            <SearchModal navigation={navigation} modalVisible={modalVisible} setModalVisible={setModalVisible} />
         </View>
     );
 }

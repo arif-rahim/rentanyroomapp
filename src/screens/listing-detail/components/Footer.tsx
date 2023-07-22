@@ -21,23 +21,105 @@ const Footer = ( item ) => {
                 <View style={{  }}>
                     <Text style={{ fontSize: 16, fontWeight: 'bold' }}>${price}<Text style={{ fontSize: 10 }}>/{label}</Text></Text>
                 </View>
+                {item.data.listing_rating >= 1 && item.data.listing_rating < 1.5?
                 <View style={{ flexDirection: 'row' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> 
+                    <Text style={{ color: 'lightgrey', left: 6 }}>Poor</Text>
+                    </View>:''}
+                    {item.data.listing_rating >= 1.5 && item.data.listing_rating <  2?
+                <View style={{ flexDirection: 'row' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-half-full" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> 
+                    <Text style={{ color: 'lightgrey', left: 6 }}>Fair</Text>
+                    </View>:''}
+                    {item.data.listing_rating >= 2 && item.data.listing_rating < 2.5?
+                <View style={{ flexDirection: 'row' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> 
+                    <Text style={{ color: 'lightgrey', left: 6 }}>Fair</Text>
+                    </View>:''}
+                    {item.data.listing_rating >= 2.5 && item.data.listing_rating < 3?
+                <View style={{ flexDirection: 'row' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-half-full" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> 
+                    <Text style={{ color: 'lightgrey', left: 6 }}>Average</Text>
+                    </View>:''}
+                    {item.data.listing_rating >= 3 && item.data.listing_rating < 3.5?
+                <View style={{ flexDirection: 'row' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> 
+                    <Text style={{ color: 'lightgrey', left: 6 }}>Average</Text>
+                    </View>:''}
+                    {item.data.listing_rating >= 3.5 && item.data.listing_rating < 4?
+                <View style={{ flexDirection: 'row' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-half-full" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> 
+                    <Text style={{ color: 'lightgrey', left: 6 }}>Good</Text>
+                    </View>:''}
+                    {item.data.listing_rating >= 4 && item.data.listing_rating< 4.5?
+                <View style={{ flexDirection: 'row' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> 
+                    <Text style={{ color: 'lightgrey', left: 6 }}>Good</Text>
+                    </View>:''}
+                    {item.data.listing_rating >= 4.5 && item.data.listing_rating < 5?
+                <View style={{ flexDirection: 'row' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-half-full" size={16} color="#f8b42b" />
+                     <Text style={{ color: 'lightgrey', left: 6 }}>Excellent</Text>
+                     </View>:''}
+                    {item.data.listing_rating >= 5?
+                <View style={{ flexDirection: 'row' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <Text style={{ color: 'lightgrey', left: 6 }}>Excellent</Text>
+                     </View>:''}
+                
+                {/* <View style={{ flexDirection: 'row' }}>
                     <FontAwesome name="star" size={16} color="#f8b42b" />
                     <FontAwesome name="star" size={16} color="#f8b42b" />
                     <FontAwesome name="star" size={16} color="#f8b42b" />
                     <FontAwesome name="star-half-o" size={16} color="#f8b42b" />
                     <FontAwesome name="star-o" size={16} color="#f8b42b" />
                     <Text style={{ color: 'lightgrey', left: 6 }}>Excellent</Text>
-                </View>    
+                </View>     */}
             </View>
             <View style={{  }}> 
                 <Pressable android_ripple={{ color: 'white' }} style={ styles.botton } onPress={() => { setModalVisible(true),setPost_id(p_id) }}>
-                {instant_booking && offsite_payment == 0 ?
+                {instant_booking == 1  && offsite_payment == 0 ?
                     <Text style={ styles.buttonText }>Instant Booking</Text> :
                     <Text style={ styles.buttonText }>Request Booking</Text>
                     }
                 </Pressable> 
-                <RequestToBookModal modalVisible={modalVisible} setModalVisible={setModalVisible} navigation={navigation} data={post_id} instant_booking={instant_booking} offsite_payment={offsite_payment}  />
+                <RequestToBookModal modalVisible={modalVisible} setModalVisible={setModalVisible} navigation={navigation} device_token={item.data.device_token} list_data={item.data} data={post_id} instant_booking={instant_booking} offsite_payment={offsite_payment}  />
             </View>
         </View>
     );

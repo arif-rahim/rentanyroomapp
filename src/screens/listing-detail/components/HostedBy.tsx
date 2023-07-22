@@ -5,11 +5,12 @@ import { FontAwesome } from "@expo/vector-icons";
 
 
 const HostedBy = (item) => {
+    // source={avatar} 
     const avatar=item.data.avatar;
     return (
         <View style={ styles.container }>
-            <View style={{ flexDirection: 'row' }}>
-                <Avatar.Image size={60} source={avatar} />
+            <View style={{ flexDirection: 'row' }}> 
+                <Avatar.Image size={60} source={{uri:avatar}} />
                 <View style={ styles.avatar }>
                     <Text style={[ styles.bold, { fontSize: 18 }]}>Hosted by {item.data.author}</Text>
                     <Text><FontAwesome name="map-marker" size={16} color="black" />  {item.data.author_country}</Text>
@@ -26,15 +27,72 @@ const HostedBy = (item) => {
             </View>
             <View style={{ marginTop: 20, marginBottom: 20 }}>
                 <Text style={ styles.bold }>Host Rating</Text>
+                {item.data.author_rating.host_rating >= 1 && item.data.author_rating.host_rating < 1.5?
+                <Text style={{ color: 'lightgrey' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> Poor</Text>:''}
+                    {item.data.author_rating.host_rating >= 1.5 && item.data.author_rating.host_rating <  2?
+                <Text style={{ color: 'lightgrey' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-half-full" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> Fair</Text>:''}
+                    {item.data.author_rating.host_rating >= 2 && item.data.author_rating.host_rating < 2.5?
+                <Text style={{ color: 'lightgrey' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> Fair</Text>:''}
+                    {item.data.author_rating.host_rating >= 2.5 && item.data.author_rating.host_rating < 3?
+                <Text style={{ color: 'lightgrey' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-half-full" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> Average</Text>:''}
+                    {item.data.author_rating.host_rating >= 3 && item.data.author_rating.host_rating < 3.5?
+                <Text style={{ color: 'lightgrey' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> Average</Text>:''}
+                    {item.data.author_rating.host_rating >= 3.5 && item.data.author_rating.host_rating < 4?
                 <Text style={{ color: 'lightgrey' }}>
                     <FontAwesome name="star" size={16} color="#f8b42b" />
                     <FontAwesome name="star" size={16} color="#f8b42b" />
                     <FontAwesome name="star" size={16} color="#f8b42b" />
                     <FontAwesome name="star-half-full" size={16} color="#f8b42b" />
-                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> Good</Text>
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> Good</Text>:''}
+                    {item.data.author_rating.host_rating >= 4 && item.data.author_rating.host_rating < 4.5?
+                <Text style={{ color: 'lightgrey' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-o" size={16} color="#f8b42b" /> Good</Text>:''}
+                    {item.data.author_rating.host_rating >= 4.5 && item.data.author_rating.host_rating < 5?
+                <Text style={{ color: 'lightgrey' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star-half-full" size={16} color="#f8b42b" /> Excellent</Text>:''}
+                    {item.data.author_rating.host_rating >= 5?
+                <Text style={{ color: 'lightgrey' }}>
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" />
+                    <FontAwesome name="star" size={16} color="#f8b42b" /> Excellent</Text>:''}
             </View>
-            <Pressable style={ styles.button }><Text style={ styles.buttonText }>Contact the host</Text></Pressable>
-            <Pressable style={ styles.button }><Text style={ styles.buttonText }>View profile</Text></Pressable>
+            {/* <Pressable style={ styles.button }><Text style={ styles.buttonText }>Contact the host</Text></Pressable>
+            <Pressable style={ styles.button }><Text style={ styles.buttonText }>View profile</Text></Pressable> */}
         </View>
     );
 }

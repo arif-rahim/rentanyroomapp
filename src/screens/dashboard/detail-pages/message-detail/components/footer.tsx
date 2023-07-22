@@ -1,9 +1,10 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React from "react";
+import React,{useEffect} from "react";
 import { StyleSheet, View, Text, Dimensions,TouchableOpacity, TextInput,ActivityIndicator } from "react-native";
 import { useForm, Controller } from 'react-hook-form';
 import axios from "axios";
 import Api from "../../../../../ApiUrl";
+import * as SecureStore from 'expo-secure-store';
 
 const Footer = (props,retData) => {
     const [text, stChangeText] = React.useState(true);
@@ -11,6 +12,22 @@ const Footer = (props,retData) => {
     const [response, setResponse] = React.useState(false);
     //const listing_id= props.route.params.listing_id;
   //console.log(thread_id);
+  useEffect(() => {
+    const bootstrapAsync = async () => {
+      let fetchData: any;
+      let fetchname: any;
+      try {
+          fetchData = await SecureStore.getItemAsync('userid');
+          global.userid = fetchData;
+          fetchname = await SecureStore.getItemAsync('username');
+          global.username= fetchname;
+      } catch (e) {
+      }
+
+
+  };
+  bootstrapAsync();
+}, [ ]); 
     const { control, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = (data: any) => {
         setResponse(true);

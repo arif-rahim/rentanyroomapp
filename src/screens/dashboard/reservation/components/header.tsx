@@ -6,7 +6,7 @@ const Header = () => {
     return (
         <View style={ styles.center }>
             <View style={[ styles.container, styles.center ]}>
-                <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Welcome back, Testing</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Welcome back, Reservations</Text>
             </View>
         </View>
     );

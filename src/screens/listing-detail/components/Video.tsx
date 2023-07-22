@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { Video, AVPlaybackStatus } from 'expo-av';
+
 
 const EmbedVideo = (item) => {
     const video = React.useRef(null);
@@ -8,7 +8,7 @@ const EmbedVideo = (item) => {
     const video_url=item.data.video_url;
     return (
         <View style={styles.container}>
-            <Video
+            {/* <Video
                 ref={video}
                 style={styles.video}
                 source={{
@@ -18,7 +18,7 @@ const EmbedVideo = (item) => {
                 resizeMode="contain"
                 isLooping
                 onPlaybackStatusUpdate={status => setStatus(() => status)}
-            />
+            /> */}
         </View>
     );
 }

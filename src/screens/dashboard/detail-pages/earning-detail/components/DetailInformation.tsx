@@ -4,7 +4,8 @@ import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
 import { DataTable } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import * as SecureStore from 'expo-secure-store';
-
+import axios from "axios";
+import Api from "../../../../../ApiUrl";
 const DetailInformation = (item) => {
     const navigation = useNavigation();
     const [userrole, setUserrole] = useState();
@@ -21,6 +22,14 @@ const DetailInformation = (item) => {
         };
         bootstrapAsync();
       }, []); 
+      const [sitelogo, setSitelogo] = useState();
+      useEffect(() => {
+          axios.get((Api.api_url)+"wp-json/jwt-auth/v1/site-logo/logo")
+          .then(res => {
+              setSitelogo(res.data);
+          })
+          .catch(err => {console.log(err)}); 
+      }, []);
       
     return (
         <View style={styles.container}>
@@ -28,10 +37,8 @@ const DetailInformation = (item) => {
                 <MaterialIcons name="arrow-back-ios" size={24} color="black" onPress={() => { navigation.goBack(); }} />
                 <View style={{}}>
                     <Image
-                        style={styles.logo}
-                        source={
-                            require('../../../../../assets/images/logo.png')
-                        } />
+                        style={styles.logo} source={require('../../../../../assets/images/homey_logo.png')}
+                        />
                 </View>
                 <View style={{}}>
                     <Text>

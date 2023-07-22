@@ -7,6 +7,22 @@ import Api from "../../../../ApiUrl";
 import styles from '../../../../assets/styles/ProfileStyle';
 
 const SocialMediaForm = () => {
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+          let fetchData: any;
+          let fetchname: any;
+          try {
+              fetchData = await SecureStore.getItemAsync('userid');
+              global.userid = fetchData;
+              fetchname = await SecureStore.getItemAsync('username');
+              global.username= fetchname;
+          } catch (e) {
+          }
+    
+    
+      };
+      bootstrapAsync();
+    }, [ ]); 
     const { control, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = (data : any) => {
         const keyword = {

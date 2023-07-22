@@ -16,7 +16,8 @@ const img5 = 'https://89239-660736-raikfcquaxqncofqfm.stackpathdns.com/wp-conten
 const img6 = 'https://89239-660736-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2018/10/15-555x262.jpg';
 
 
-const FindYourConfort = () => {
+const FindYourConfort = ({navigation}) => {
+   
     const [Comfort_Place, setComfort_Place] = useState([]);
     const [Comfort_array, setComfort_array] = useState([]);
     useEffect(() => {
@@ -31,6 +32,9 @@ const FindYourConfort = () => {
    
     setComfort_Place(Comfort_array);
   }, []);
+
+  let a=0;
+
   if(Comfort_array.length!= 0){
     return (
         <View style={{ flex: 1, marginTop: 50, marginBottom: 50 }}>
@@ -38,19 +42,68 @@ const FindYourConfort = () => {
                 <Text style={ styles.heading }>Find a Place That Fits Your Comfort</Text>
             </View>
             {Comfort_array.map((localState, index) => ( index ===0 ? 
-            <Card style={ styles.rectangleCard } image={localState.url} text=  {localState.name} key={index} /> :
-            <View style={ styles.row } key={index}>
-                <Card style={ styles.squareCard } image={localState.url} gradientWidth={square} text= {localState.name} key={index}/>
-                
-            </View>
+            <TouchableOpacity onPress={() => {  navigation.navigate('SearchResultPage', { 
+                listings: {keyword: '',
+                    arrive: '',
+                    depart: '',
+                    guest: '',
+                    listing_type: localState.name,},
+            });}}>
+            <Card style={ styles.rectangleCard } image={localState.url} text=  {localState.name} key={index} />
+            </TouchableOpacity>:''
+           ))}
+           <View style={ styles.row }>
+           {Comfort_array.map((localState, index) => ( index ===1 || index ===2 ?
+            <TouchableOpacity onPress={() => {  navigation.navigate('SearchResultPage', { 
+                listings: {keyword: '',
+                    arrive: '',
+                    depart: '',
+                    guest: '',
+                    listing_type: localState.name,},
+            });}}>
+                 <Card style={ styles.squareCard } image={localState.url} text= {localState.name}  gradientWidth={square}  key={index} /> 
+                 </TouchableOpacity>:''
+                ))}
+            </View> 
+            {Comfort_array.map((localState, index) => ( index ===3 ? 
+             <TouchableOpacity onPress={() => {  navigation.navigate('SearchResultPage', { 
+                listings: {keyword: '',
+                    arrive: '',
+                    depart: '',
+                    guest: '',
+                    listing_type: localState.name,},
+            });}}>
+            <Card style={ styles.rectangleCard } image={localState.url} text=  {localState.name} key={index} />
+            </TouchableOpacity>: ''
             ))}
             {/* <View style={ styles.row }>
                 <Card style={ styles.squareCard } image={img4} gradientWidth={square} text= 'House' />
                 <Card style={ styles.squareCard } image={img5} gradientWidth={square} text= 'Loft' />
             </View>
-            <Card style={ styles.rectangleCard } image={img6} text= 'Studio' /> */}
+            <Card style={ styles.rectangleCard } image={img6} text= 'Studio' /> 
+            <TouchableOpacity style={[ styles.button ]} 
+                            onPress={() => {
+                                setModalVisible(!modalVisible); 
+                                
+                                navigation.navigate('SearchResultPage', { 
+                                    listings: {keyword: togo,
+                                        arrive: Moment(arrive).format('YYYY-MM-DD'),
+                                        depart: Moment(depart).format('YYYY-MM-DD'),
+                                        guest: guests,},
+                                });
+                           
+                        }}>  
+                            <Text style={[ styles.buttonText, { color: 'white' } ]}>Search</Text>
+                        </TouchableOpacity>
+            */}
 
-            <TouchableOpacity style={ styles.button }>
+            <TouchableOpacity style={ styles.button } onPress={() => {  navigation.navigate('SearchResultPage', { 
+                listings: {keyword: '',
+                    arrive: '',
+                    depart: '',
+                    guest: '',
+                    listing_type: '',},
+            });}}>
                 <Text style={ styles.buttonText }>Find More Places To Rent</Text>
             </TouchableOpacity>
         </View>
@@ -103,6 +156,7 @@ const styles = StyleSheet.create({
         width: square,
         height: (height / 4), 
         alignSelf: 'center',
+        
     },
     row: {
         justifyContent: 'space-between',

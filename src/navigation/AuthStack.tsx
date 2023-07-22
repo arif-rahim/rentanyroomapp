@@ -21,6 +21,7 @@ import InvoiceDetailPage from "../screens/dashboard/detail-pages/invoice-detail"
 import MessageDetail from "../screens/dashboard/detail-pages/message-detail";
 import EarningDetailPage from "../screens/dashboard/detail-pages/earning-detail";
 import ReservationDetailPage from "../screens/dashboard/detail-pages/reservation-detail";
+import BlofgDetailPage from "../screens/dashboard/detail-pages/blog-detail";
 
 const Stack = createStackNavigator();
 
@@ -123,6 +124,12 @@ function Auth() {
                                 headerShown: true,
                                 headerTitle: 'Search Result'
                             }} />    
+                         <Stack.Screen 
+                            name="Forgot" 
+                            component={ForgotScreen} />    
+                         <Stack.Screen 
+                            name="BlofgDetailPage" 
+                            component={BlofgDetailPage} />   
                     </Stack.Group>
                     
                 ) : (
@@ -155,6 +162,9 @@ function Auth() {
                         <Stack.Screen 
                             name="InvoiceDetailPage" 
                             component={InvoiceDetailPage} />
+                        <Stack.Screen 
+                            name="BlofgDetailPage" 
+                            component={BlofgDetailPage} />
                         <Stack.Screen 
                             name="MessageDetailPage" 
                             component={MessageDetail} />

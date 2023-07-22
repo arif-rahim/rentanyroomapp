@@ -1,17 +1,25 @@
 import { FontAwesome } from "@expo/vector-icons";
-import React from "react";
+import React,{useState} from "react";
 import { StyleSheet, View, Text, Pressable, Dimensions } from "react-native";
+import Host_contact from "../../../modals/Host_contact";
+import Host_profile from "../../../modals/Host_profile";
+import { useNavigation } from "@react-navigation/native";
 
-
-const BookingModuleFooter = () =>{
+const BookingModuleFooter = (items) =>{
+    const navigation = useNavigation(); 
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modaProfilelVisible, setModalProfileVisible] = useState(false);
     return (
         <View style={ styles.container }>
-            <Pressable android_ripple={{ color: 'lighgrey' }} style={ styles.button }>
-                <Text style={ styles.buttonText } ><FontAwesome name="heart-o" size={14} color="black" /> Add to Favorite</Text>
+            <Pressable android_ripple={{ color: 'lighgrey' }} style={ styles.button } onPress={() => { setModalProfileVisible(true) }} >
+                <Text style={ styles.buttonText } ><FontAwesome name="heart-o" size={14} color="black" /> View profile</Text>
             </Pressable>
-            <Pressable android_ripple={{ color: 'lightgrey' }} style={ styles.button }>
+            <Pressable android_ripple={{ color: 'lightgrey' }} style={ styles.button } onPress={() => { setModalVisible(true) }}>
                 <Text style={ styles.buttonText } >Contact the host</Text>
             </Pressable>
+            <Host_contact modalVisible={modalVisible} setModalVisible={setModalVisible} navigation={navigation}  data={items} />
+            <Host_profile modaProfilelVisible={modaProfilelVisible} setModalProfileVisible={setModalProfileVisible} navigation={navigation} host_id={items.data.author_id}  />
+
         </View>
     );
 }

@@ -27,13 +27,14 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         const keyword = {
             keyword: '',
+            num_posts: '9', 
             sort_by: 'featured'
         };
 
         axios.post((Api.api_url)+"wp-json/jwt-auth/v1/search/homey_half_map", keyword )
             .then(res => {
                 //console.log(dummyData);
-               // console.log(res);
+                
                 setIsLoaded(true);
                 setItems(res.data);
 
@@ -51,7 +52,7 @@ const Home = ({ navigation }) => {
             
             axios.get((Api.api_url)+"wp-json/jwt-auth/v1/token/user_host" )
             .then(res => {
-                //console.log(res);
+               
                 setIsLoaded(true);
                 setTestimonialitems(res.data);
         
@@ -107,8 +108,8 @@ const Home = ({ navigation }) => {
                         }
                     }}
                 />
-                <Banner />
-                <FindYourConfort />
+                <Banner /> 
+                <FindYourConfort navigation={navigation}/>
                 <Carousel 
                     data={Testimonialitems}
                     component='TestimonialItem'
@@ -136,6 +137,7 @@ const Home = ({ navigation }) => {
                     data={Blogs} 
                     component='FromOurBlogItem' 
                     key={Blogs.ID}
+                    navigation={navigation}
                     title='From Our Blog'
                     disc='Keep always update on latest topics.'
                     customStyle={{

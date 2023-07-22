@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, Image, Dimensions, ImageBackground, TouchableOp
 import { Avatar } from 'react-native-paper'
 import { FontAwesome } from '@expo/vector-icons'
 import RatingStars from '../../../components/RatingStars'
-
 const { width, height } = Dimensions.get('window')
  
 const ListItem = ({ item, navigation }) => {
@@ -11,22 +10,19 @@ const ListItem = ({ item, navigation }) => {
    // return <View></View>;
     let image_url = 'https://via.placeholder.com/300/FF0000/FFFFFF?text=Image+Not+Availabe';
     let avatar_url = 'https://via.placeholder.com/150/FF00FF/FFFFFF?text=Image+Not+Availabe';
-    // if( typeof item._embedded['wp:featuredmedia'][0].media_details != 'undefined' ) {
-
-    //     let source_url = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
-    //     // if( source_url !== '' || source_url !== null || typeof source_url !== 'undefined' ) {
-    //     //     image_url = source_url;
-    //     // }
-    //     image_url = source_url !== '' ? source_url : "https://via.placeholder.com/300/FF0000/FFFFFF?text=Image+Not+Availabe";
-    // }
     let source_url =item.thumbnail
     image_url = source_url !== '' ? source_url : "https://via.placeholder.com/300/FF0000/FFFFFF?text=Image+Not+Availabe";
 
    avatar_url = item.avatar ? item.avatar : "https://via.placeholder.com/300/FF0000/FFFFFF?text=Image+Not+Availabe";
+   
+
 
    if(item){
     return (
+      
+         
         <View key={item.id} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                
             <View style={styles.cardView}>
                 <TouchableOpacity onPress={() => {
                     navigation.navigate('ListingDetailPage', {
@@ -78,6 +74,7 @@ const ListItem = ({ item, navigation }) => {
                 </View>
             </View>
         </View>
+      
     )}
     else{
     return (
@@ -90,6 +87,10 @@ const ListItem = ({ item, navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    map: {
+        width: Dimensions.get('window').width,
+        height: 450,//Dimensions.get('window').height,
+    },
     cardView: {
         //flex: 1,
         width: width - 20,

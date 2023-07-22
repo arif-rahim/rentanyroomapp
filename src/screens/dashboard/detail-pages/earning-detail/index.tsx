@@ -4,10 +4,27 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import DetailInformation from "./components/DetailInformation";
 import axios from "axios";
 import Api from "../../../../ApiUrl";
+import * as SecureStore from 'expo-secure-store';
 
 const EarningDetailPage = (props) => {
     const [earning_item, setEarning_item] = useState();
     const post_id= props.route.params.itemId;
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+          let fetchData: any;
+          let fetchname: any;
+          try {
+              fetchData = await SecureStore.getItemAsync('userid');
+              global.userid = fetchData;
+              fetchname = await SecureStore.getItemAsync('username');
+              global.username= fetchname;
+          } catch (e) {
+          }
+    
+    
+      };
+      bootstrapAsync();
+    }, [ ]); 
     useEffect(() => {
         axios.get((Api.api_url)+"wp-json/jwt-auth/v1/profile/wallet_detail?detail="+post_id+"&user_id="+global.userid )
             .then(res => { 

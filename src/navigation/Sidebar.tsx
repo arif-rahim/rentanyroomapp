@@ -7,7 +7,8 @@ import styles from "../assets/styles/ProfileStyle";
 import { AuthContext } from "../hooks/useAuthContext";
 import { Avatar } from 'react-native-paper';
 import WalletPage from '../screens/dashboard/wallet';
-
+import axios from "axios";
+import Api from "../ApiUrl";
 
 const Drawer = createDrawerNavigator();
 const Sidebar = (props) => {
@@ -38,12 +39,20 @@ const Sidebar = (props) => {
                     userToken: null,
                 };
         }
-    }
+    } 
     const { signOut } = useContext(AuthContext);
     const [userData, setUserData] = useState();
     const [username, setUserName] = useState();
     const [avatar, setUseAvatar] = useState();
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [sitelogo, setSitelogo] = useState();
+    useEffect(() => {
+        axios.get((Api.api_url)+"wp-json/jwt-auth/v1/site-logo/logo")
+        .then(res => {
+            setSitelogo(res.data);
+        })
+        .catch(err => {console.log(err)}); 
+    }, []);
     useEffect(() => {
         const bootstrapAsync = async () => {
 
@@ -71,17 +80,17 @@ const Sidebar = (props) => {
     return (
        
         <DrawerContentScrollView {...props}>
-             {state.userToken == null ? <Image style={{ width: 130, height: 50 }} source={require('../assets/images/logo.png')} /> :
+             {state.userToken == null ? <Image style={{resizeMode: 'contain', width: 130, height: 50 }} source={require('../assets/images/homey_logo.png')} /> :
             <View style={{ ...styles.alignCenter, height: 200, borderBottomWidth: .2, borderBottomColor: 'lightgrey', marginBottom: 10 }}>
                 <View style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: "lightgrey" }}>
-                    <FontAwesome name="user-circle-o" size={100} color="white" />
+                    {/* <FontAwesome name="user-circle-o" size={100} color="white" /> */}
                     
-                    <Avatar.Image style={style.testimonialThumb} size={42} source={{ uri: avatar}} />
+                    <Avatar.Image style={style.testimonialThumb} size={100} source={{ uri: avatar}} />
                 </View>
                 <View style={styles.spacer} />
                 <View style={{ ...styles.alignTextCenter, flex: 0 }}>
                     <Text style={{ fontSize: 20 }}>{username}</Text>
-                    <Text>{userData}</Text>
+                    {/* <Text>{userData}</Text> */}
                 </View>
             </View>}
 

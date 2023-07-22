@@ -28,7 +28,7 @@ function listing_data() {
         //     )
     }, [])
 
-    console.log(dummyData);
+   
    return dummyData;
     // if (error) {
     //     return <div>Error: { error.message } </div>;

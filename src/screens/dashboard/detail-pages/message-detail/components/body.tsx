@@ -1,13 +1,31 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { StyleSheet, View, Text, TouchableWithoutFeedback, Image } from "react-native";
 import { Message } from "../../../../../../types";
 import moment from "moment";
+import * as SecureStore from 'expo-secure-store';
 
 export type ChatMessageProps = {
     message: Message;
 }
 
 const MessageBody = (props: ChatMessageProps) => {
+
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+          let fetchData: any;
+          let fetchname: any;
+          try {
+              fetchData = await SecureStore.getItemAsync('userid');
+              global.userid = fetchData;
+              fetchname = await SecureStore.getItemAsync('username');
+              global.username= fetchname;
+          } catch (e) {
+          }
+    
+    
+      };
+      bootstrapAsync();
+    }, [ ]); 
     const { message } = props;
     if(message){
     const isMyMessage = () => {
@@ -20,7 +38,8 @@ const MessageBody = (props: ChatMessageProps) => {
                 {
                   backgroundColor: isMyMessage() ? '#DCF8C5' : '#FFFFFF',
                   marginLeft:   isMyMessage() ? 50 : 0,
-                  marginRight:  isMyMessage() ? 0 : 50,  
+                  marginRight:  isMyMessage() ? 0 : 0, 
+                   
                 }          
             ]}> 
                 {!isMyMessage() && <Text style={styles.name}>{message.user.name}</Text>}

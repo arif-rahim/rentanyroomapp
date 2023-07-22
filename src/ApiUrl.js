@@ -1,4 +1,4 @@
 export default {
-api_url:"https://staging.webpenter.com/"
+api_url:"https://www.rentanyroom.com/"
 
 }

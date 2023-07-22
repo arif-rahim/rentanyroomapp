@@ -4,15 +4,21 @@ import Colors from '../../../constants/Colors';
 
 const { width, height } = Dimensions.get('window');
 
-const Banner = () => {
+const Banner = ({navigation}) => {
     return (
         <View>
-            <ImageBackground style={ [styles.imageBackground, styles.container] } source={{ uri: 'https://demo01.gethomey.io/wp-content/uploads/2018/10/32-6.jpg' }} resizeMode='cover'>
+            <ImageBackground style={ [styles.imageBackground, styles.container] } source={{ uri: 'https://www.rentanyroom.com/wp-content/uploads/2023/06/bedroom-1872196_1920.jpg' }} resizeMode='cover'>
                 <View style={styles.card}>
-                    <Text style={styles.heading}>Modern Apartment</Text>
-                    <Text style={styles.price}>$79 at night</Text>
-                    <Text style={styles.text}>I am text block. Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit</Text>
-                    <TouchableOpacity style={styles.button}>
+                    <Text style={styles.heading}>Rent any room anywhere in the world</Text>
+                    {/* <Text style={styles.price}>$79 at night</Text> */}
+                    <Text style={styles.text}>your premier destination for short to medium term stays and a wide range of rental options</Text>
+                    <TouchableOpacity style={styles.button} onPress={() => {  navigation.navigate('SearchResultPage', { 
+                listings: {keyword: '',
+                    arrive: '',
+                    depart: '',
+                    guest: '',
+                    listing_type: '',},
+            });}}>
                         <Text style={styles.buttonText}>Book Now</Text>
                     </TouchableOpacity>
                 </View>

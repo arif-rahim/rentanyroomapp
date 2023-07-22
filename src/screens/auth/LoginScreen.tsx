@@ -3,7 +3,7 @@ import {
     View,
     Text,
     TextInput,
-    TouchableOpacity,
+    TouchableOpacity,Platform,StyleSheet,ActivityIndicator 
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useForm, Controller } from 'react-hook-form';
@@ -11,10 +11,56 @@ import * as WebBrowser from 'expo-web-browser';
 import Index from './index';
 import styles from '../../assets/styles/AuthStyle'
 import { AuthContext } from '../../hooks/useAuthContext';
+import ErrorComponent from './ErrorComponent';
 import * as Google from 'expo-auth-session/providers/google';
+import ForgotPasswordScreen   from "./ForgotPasswordScreen";
+import * as AuthSession from 'expo-auth-session';
+import * as Facebook from 'expo-auth-session/providers/facebook';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import * as SecureStore from 'expo-secure-store';
+import HTML from 'react-native-render-html';
+import { black } from 'react-native-paper/lib/typescript/styles/colors';
+
+WebBrowser.maybeCompleteAuthSession();
+
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    //console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
+}
+
+
 const LoginScreen = ({ navigation }) => {
     const [accessToken, setAccessToken] = React.useState(null);
     const [user, setUser] = React.useState(null);
+    const { signUp } = useContext(AuthContext);
 
     const [request, response, promptAsync] = Google.useAuthRequest({
         iosClientId: '885142629737-7rka3t88hq136upivp1nlhki9rm22qef.apps.googleusercontent.com',
@@ -36,28 +82,77 @@ const LoginScreen = ({ navigation }) => {
         });
         const useInfo = await response.json();
         setUser(useInfo);
+        signUp(useInfo);
       }
-    console.log(user);
-    const loginWithFacebook = () => {
+    //console.log(user);
+    // const loginWithFacebook = () => {
         
-    };
+    // };
+    const [fuser, setUfser] = useState(null);
+  const [frequest, fresponse, fpromptAsync] = Facebook.useAuthRequest({
+    clientId: "200537116125291",
+  });
+
+  if (frequest) {
+    console.log(
+      "You need to add this url to your authorized redirect urls on your Facebook app: " +
+      frequest.redirectUri
+    );
+  }
+  const [expoPushToken, setExpoPushToken] = useState('');
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    if (fresponse && fresponse.type === "success" && fresponse.authentication) {
+      (async () => {
+        const userInfoResponse = await fetch(
+          `https://graph.facebook.com/me?access_token=${fresponse.authentication.accessToken}&fields=id,name,picture.type(large)`
+        );
+        const userInfo = await userInfoResponse.json();
+        setUfser(userInfo);
+        signUp(userInfo);
+      })();
+    }
+  }, [fresponse]);
+    const loginWithFacebook = async () => {
+        const result = await fpromptAsync();
+        if (result.type !== "success") {
+          alert("Uh oh, something went wrong");
+          return;
+        } else {
+            console.log(result);
+        }
+      };
     const loginWithGoogle  = async () => {
     };
-    const { control, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = (data: any) => {
-        // console.log(data);
-        signIn(data);
+    const { control, handleSubmit,setValue , formState: { errors } } = useForm();
+    // const onSubmit = (data: any) => {
+    //   setValue('expoPushToken', expoPushToken);
+         
+    //     signIn(data);
+    //     console.log(signIn(data));
+    // };
+    const [res, setRes] = useState();
+    const [spiner, setSpiner] = useState(false);
+    const onSubmit = async (data) => {
+      setSpiner(true);
+      setValue('expoPushToken', expoPushToken);
+      const result = await signIn(data);
+      setRes(result);console.log(result);
+      if(result){setSpiner(false);}
+      
     };
     
     const { signIn } = useContext(AuthContext);
 
+   
     return (
 
         <Index>
             <View style={styles.inner}>
-                <Text style={{ fontSize: 30, marginBottom: 15, width: "100%", height: "20%" }}>Login</Text>
+                <Text style={{ fontSize: 30, marginBottom: 15,  justifyContent: "center", height: "15%" }}>Login</Text>
 
-                <FontAwesome.Button style={{ ...styles.iconBtn, ...styles.facebook }} name="facebook" color="#3b5998" backgroundColor="white" onPress={loginWithFacebook}>
+                {/* <FontAwesome.Button style={{ ...styles.iconBtn, ...styles.facebook }} name="facebook" color="#3b5998" backgroundColor="white" onPress={loginWithFacebook}>
                     <Text style={{ width: "80%", textAlign: 'center', color: '#3b5998' }}> Login with Facebook</Text>
                 </FontAwesome.Button>
 
@@ -65,7 +160,7 @@ const LoginScreen = ({ navigation }) => {
 
                 <FontAwesome.Button style={{ ...styles.iconBtn, ...styles.google }} name="google" color="red" backgroundColor="white" onPress={() => {promptAsync(); }}>
                     <Text style={{ width: "80%", textAlign: 'center', color: 'red' }}> Login with Google</Text>
-                </FontAwesome.Button>
+                </FontAwesome.Button> */}
 
                 <View style={styles.spacer} />
 
@@ -73,8 +168,11 @@ const LoginScreen = ({ navigation }) => {
 
 
                 <View style={styles.spacer} />
-
+                
                 <View>
+
+                   
+                    
                     <Controller
                         control={control}
                         rules={{
@@ -95,30 +193,42 @@ const LoginScreen = ({ navigation }) => {
                         defaultValue=""
                     />
                     {errors.email && <Text style={{ color: 'red' }}>Invalid email</Text>}
-
+                    {/* {errors.email && setSpiner(false)} */}
                     <Controller
                         control={control}
                         rules={{
-                            minLength: 8,
+                            minLength: 3,
                             required: true,
                         }}
                         render={({ field: { onBlur, onChange, value } }) => (
+                            // <TextInput
+                            //     placeholder="Password"
+                            //     style={styles.textInput}
+                            //     onBlur={onBlur}
+                            //     onChangeText={onChange}
+                            //     value={value}
+                            //     secureTextEntry={true}
+                            //     keyboardType='visible-password'
+                            // />
                             <TextInput
-                                placeholder="Password"
-                                style={styles.textInput}
-                                onBlur={onBlur}
-                                onChangeText={onChange}
-                                value={value}
-                                secureTextEntry={true}
-                                keyboardType='visible-password'
-                            />
+          style={styless.inputField}
+          placeholder="Enter password"
+          autoCapitalize="none"
+          autoCorrect={false}
+          textContentType="newPassword"
+          secureTextEntry
+          value={value}
+          enablesReturnKeyAutomatically
+          onBlur={onBlur}
+          onChangeText={onChange}
+        />
                         )}
                         name="password"
                         defaultValue=""
-                    />
+                    /> 
 
                     {errors.password && <Text style={{ color: 'red' }}>Exceed maxLength</Text>}
-
+                    {/* {errors.password && setSpiner(false)} */}
 
                     <TouchableOpacity
                         onPress={() => navigation.navigate('Forgot')}
@@ -126,10 +236,16 @@ const LoginScreen = ({ navigation }) => {
                         <Text style={{ marginTop: 10, textAlign: 'right' }}>Forgot Password?</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btnContainer} onPress={handleSubmit(onSubmit)} >
-                        <Text style={{ color: 'white' }}>Login</Text>
+                    <TouchableOpacity style={styles.btnContainer} onPress={handleSubmit(onSubmit)}>
+                    {spiner?<ActivityIndicator color={"#fff"} />:<Text style={{ color: 'white' }}>Login</Text>}
+                        
+                        {/* {spiner && <ActivityIndicator color={"#fff"} />} */}
                     </TouchableOpacity>
-
+                    <View>
+                      {res?
+                      <ErrorComponent response={res}/>:''
+                    }
+                    </View>
                     <View style={styles.spacer} />
 
                     <Text>You don't have an account?
@@ -149,3 +265,17 @@ const LoginScreen = ({ navigation }) => {
 
 
 export default LoginScreen;
+
+const styless = StyleSheet.create({
+  inputField: {
+    marginTop: 20,
+        height: 40,
+        borderColor: "lightgrey",
+        borderWidth: 2,
+        borderRadius: 5,
+        paddingLeft: 5,
+        paddingRight: 5,
+        marginBottom: 2,
+
+  }
+});

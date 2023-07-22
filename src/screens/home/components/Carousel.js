@@ -10,7 +10,7 @@ import OurPartnerItem from './OurPartnerItem'
 let flatList
  
 
-const Carousel = ({ data, title = '', disc = '', featured = false, dotView = false, horizontal = false, whiteSpace = false, component = 'default', customStyle = {} }) => {
+const Carousel = ({ data, title = '', disc = '', featured = false, dotView = false, horizontal = false, whiteSpace = false, component = 'default', customStyle = {} },{navigation}) => {
 //console.log(data);
     const scrollX = useRef(new Animated.Value(0)).current;
     const { width: windowWidth } = useWindowDimensions();
@@ -44,7 +44,7 @@ const Carousel = ({ data, title = '', disc = '', featured = false, dotView = fal
                     renderItem={({ item }) => {
                         switch (component) { 
                             case 'TrendingItem':
-                                return <TrendingItem item={item} />
+                                return <TrendingItem item={item} navigation={navigation} />
                             case 'FromOurBlogItem':
                                 return <FromOurBlogItem item={item} />
                             case 'TestimonialItem':

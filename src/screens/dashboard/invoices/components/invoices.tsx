@@ -7,17 +7,39 @@ import Carousel from '../../../../helper/Carousel';
 import { dummyData } from '../../../../data/Data';
 import axios from "axios";
 import Api from "../../../../ApiUrl";
- 
+import * as SecureStore from 'expo-secure-store';
+
 const Invoices = () => {
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+          let fetchData: any;
+          let fetchname: any;
+          try {
+              fetchData = await SecureStore.getItemAsync('userid');
+              global.userid = fetchData;
+              fetchname = await SecureStore.getItemAsync('username');
+              global.username= fetchname;
+          } catch (e) {
+          }
+    
+    
+      };
+      bootstrapAsync();
+    }, [ ]); 
     const [userid, setUserId] = useState(); 
     const [invoices, setInvoices] = useState([]);
-    useEffect(() => {
+    const [spiner, setSpiner] = useState(true);
+    const fetchData = () => {
         axios.get((Api.api_url)+"wp-json/jwt-auth/v1/listing/invoices?user_id="+global.userid )
-            .then(res => { 
-               
-                setInvoices(res.data);
-            })
-            .catch(err => {console.log(err)}); 
+        .then(res => { 
+           
+            setInvoices(res.data);
+            setSpiner(false);
+        })
+        .catch(err => {console.log(err)}); 
+    }
+    useEffect(() => {
+        fetchData();
     }, []);   
     if(invoices.length!= 0){
 
@@ -56,8 +78,8 @@ const Invoices = () => {
         return (
             <SafeAreaView style={styles.container}>
                 <View style={styles.loader}>
-                    <ActivityIndicator size="large" color="#0c9" />
-                    <Text style={{fontSize:16,color:'red'}}>Loading ...</Text>
+                {spiner && <ActivityIndicator color={"red"} />}
+                    {spiner==false?<Text style={{fontSize:16,color:'red'}}>No result found</Text>:''}
                 </View>
             </SafeAreaView>
         );}

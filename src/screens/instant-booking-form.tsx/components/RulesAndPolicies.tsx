@@ -9,7 +9,7 @@ const RulesAndPolicies = (props) => {
     const onChecked = () => {
         setChecked(!checked)
     }
-console.log(props);
+ 
     return (
         <View style={ styles.container }>
             <View style={ styles.form }>
@@ -26,23 +26,35 @@ console.log(props);
 
                 <View>
                     <View style={ styles.rules }>
-                        <Text style={ styles.text }><FontAwesome name="times" color='black' /> Smoking allowed:</Text>
-                        <Text>No</Text>
+                    <Text style={styles.text}>
+                    {props.data.smoke ==0 ? <FontAwesome name="times" size={16} color="black" />  : 
+                    <FontAwesome name="check" size={16} color="black" /> }  Smooking allowed:
+                    </Text>
+                    <Text style={styles.bold}> {props.data.smoke ==0 ? 'No' : 'Yes'}</Text>
                     </View>
 
                     <View style={ styles.rules }>
-                        <Text style={ styles.text }><FontAwesome name="check" color='black' /> Pets allowed:</Text>
-                        <Text>Yes</Text>
+                    <Text style={styles.text}>
+                    {props.data.pets ==0 ? <FontAwesome name="times" size={16} color="black" />  : 
+                    <FontAwesome name="check" size={16} color="black" /> } Pets allowed:
+                    </Text> 
+                    <Text style={styles.bold}> {props.data.pets ==0 ? 'No' : 'Yes'}</Text>
                     </View>
 
                     <View style={ styles.rules }>
-                        <Text style={ styles.text }><FontAwesome name="times" color='black' /> Party allowed:</Text>
-                        <Text>No</Text>
+                    <Text style={styles.text}>
+                    {props.data.party ==0 ? <FontAwesome name="times" size={16} color="black" />  : 
+                    <FontAwesome name="check" size={16} color="black" /> }  Party allowed:
+                    </Text>
+                    <Text style={styles.bold}> {props.data.party ==0 ? 'No' : 'Yes'}</Text>
                     </View>
 
                     <View style={ styles.rules }>
-                        <Text style={ styles.text }><FontAwesome name="check" color='black' /> Children allowed:</Text>
-                        <Text>Yes</Text>
+                    <Text style={styles.text}>
+                    {props.data.children ==0 ? <FontAwesome name="times" size={16} color="black" />  : 
+                    <FontAwesome name="check" size={16} color="black" /> }  Children allowed:
+                    </Text>
+                    <Text style={styles.bold}> {props.data.children ==0 ? 'No' : 'Yes'}</Text>
                     </View>
                 </View>
 

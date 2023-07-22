@@ -4,7 +4,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import CalendarPicker from 'react-native-calendar-picker';
 import { useForm, Controller } from 'react-hook-form';
 import axios from "axios";
-import Api from "../ApiUrl";
+import Api from "../../../ApiUrl";
 import * as SecureStore from 'expo-secure-store';
 import Moment from 'moment';
 
@@ -13,6 +13,22 @@ const { width, height } = Dimensions.get('window');
 
 const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,data,instant_booking,offsite_payment }) => {
     //console.log(instant_booking);
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+          let fetchData: any;
+          let fetchname: any;
+          try {
+              fetchData = await SecureStore.getItemAsync('userid');
+              global.userid = fetchData;
+              fetchname = await SecureStore.getItemAsync('username');
+              global.username= fetchname;
+          } catch (e) {
+          }
+    
+    
+      };
+      bootstrapAsync();
+    }, [ ]);
     const [selectedRange, setRange] = useState({});
     const [start, setStartDate] = useState('');
     const [end, setEndDate] = useState('');
@@ -87,7 +103,7 @@ const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,
     axios.get((Api.api_url)+"wp-json/jwt-auth/v1/search/search_availability?listing_id="+data+"&check_in_date="+start+"&check_out_date="+end+"&guests=",guest )
     .then(res => {
         setLoading(false);
-        console.log(res.data);
+       
         if(res.data.booking_cost){setBookprice(res.data.booking_cost.total_price);}
         if(res.data.message){setMesg(res.data.message);}
         if(res.data.success){setError(res.data.success);}

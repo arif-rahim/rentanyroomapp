@@ -54,7 +54,23 @@ const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,
     const [message, setMesg] = useState('');
     const [error, setError] = useState(false);
     const [total_price, setBookprice] = useState('');
+   
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+          let fetchData: any;
+          let fetchname: any;
+          try {
+              fetchData = await SecureStore.getItemAsync('userid');
+              global.userid = fetchData;
+              fetchname = await SecureStore.getItemAsync('username');
+              global.username= fetchname;
+          } catch (e) {
+          }
     
+    
+      };
+      bootstrapAsync();
+    }, [ ]); 
    
     const onSubmit = (data : any) => {
         setisLoading(true);

@@ -1,9 +1,10 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
-
+import Moment from 'moment';
 
 const BookingInfo = (props) => {
+   // console.log(props.data.start);
     return (
         <View style={ styles.container }>
             <View style={ styles.textContainer }>
@@ -19,8 +20,8 @@ const BookingInfo = (props) => {
 
 
             <View style={ styles.bookingInfoBox }>
-                <Text style={ styles.title }>Testing</Text>
-                <Text style={ styles.text }>Appartment</Text>
+                <Text style={ styles.title }>{props.data.list_data.title}</Text>
+                <Text style={ styles.text }>{props.data.list_data.listing_type}</Text>
 
                 <View style={ styles.space } />
                 
@@ -28,12 +29,12 @@ const BookingInfo = (props) => {
                     <View style={ styles.row }>
                         <View>
                             <Text style={ styles.text }><FontAwesome name="arrow-circle-o-down" color="black" /> Arrive</Text>
-                            <Text style={ styles.date }>{props.data.start}</Text>
+                            <Text style={ styles.date }>{Moment(props.data.start).format('YYYY-MM-DD')}</Text>
                         </View>
 
                         <View>
                             <Text style={ styles.text }><FontAwesome name="arrow-circle-o-up" color="black" /> Depart</Text>
-                            <Text style={ styles.date }>{props.data.end}</Text>
+                            <Text style={ styles.date }>{Moment(props.data.end).format('YYYY-MM-DD')}</Text>
                         </View>
                     </View>
 
@@ -42,7 +43,7 @@ const BookingInfo = (props) => {
                     <View style={ styles.row }>
                         <View>
                             <Text style={ styles.text }><FontAwesome name="user" color="black" /> Guests</Text>
-                            <Text style={ styles.date }>{props.data.guestchange} Guests</Text>
+                            <Text style={ styles.date }> Guests {props.data.guestchange}</Text>
                         </View>
                     </View>
                 </View>

@@ -9,8 +9,25 @@ import { dummyData } from "../../../../data/Data";
 import PayoutForm from "./PayoutForm";
 import axios from "axios";
 import Api from "../../../../ApiUrl";
+import * as SecureStore from 'expo-secure-store';
 
 const Earnings = () => {
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+          let fetchData: any;
+          let fetchname: any;
+          try {
+              fetchData = await SecureStore.getItemAsync('userid');
+              global.userid = fetchData;
+              fetchname = await SecureStore.getItemAsync('username');
+              global.username= fetchname;
+          } catch (e) {
+          }
+    
+    
+      };
+      bootstrapAsync();
+    }, [ ]);
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [earning_item, setEarning_item] = useState([]);

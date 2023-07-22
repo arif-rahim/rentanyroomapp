@@ -4,9 +4,10 @@
     "slug": "homey",
     "version": "1.0.0",
     "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
     "icon": "./src/assets/images/icon.png",
     "splash": {
-      "image": "./src/assets/images/splash.jpg",
+      "image": "./src/assets/images/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -16,17 +17,34 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "yourMerchantIdentifier",
+          "enableGooglePay": true
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.webpenter.HomeyMobileApp",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "config": {
+        "googleMapsApiKey": "AIzaSyB_R7rumccJ0JOR2A79p20VxG_pt6sM3zU"
+      }
     },
     "android": {
       "package": "com.webpenter.HomeyMobileApp",
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "foregroundImage": "./src/assets/images/icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyB_R7rumccJ0JOR2A79p20VxG_pt6sM3zU"
+        }
       }
     },
     "web": {
@@ -39,4 +57,5 @@
     },
     "owner": "arif710"
   }
+ 
 }

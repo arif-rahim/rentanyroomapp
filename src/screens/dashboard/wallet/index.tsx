@@ -10,18 +10,38 @@ import Payouts      from "./components/Payouts";
 import PayoutForm   from "./components/PayoutForm";
 import axios from "axios";
 import Api from "../../../ApiUrl";
+import * as SecureStore from 'expo-secure-store';
 
 const WalletPage = () => {
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+          let fetchData: any;
+          let fetchname: any;
+          try {
+              fetchData = await SecureStore.getItemAsync('userid');
+              global.userid = fetchData;
+              fetchname = await SecureStore.getItemAsync('username');
+              global.username= fetchname;
+          } catch (e) {
+          }
+    
+    
+      };
+      bootstrapAsync();
+    }, [ ]); 
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [wallet_item, setWallet_item] = useState([]);
-    useEffect(() => {
+    const fetchData = () => {
         axios.get((Api.api_url)+"wp-json/jwt-auth/v1/profile/wallet?user_id="+global.userid+"&limit=5" )
-            .then(res => { 
-               
-                setWallet_item(res.data);
-            })
-            .catch(err => {console.log(err)}); 
+        .then(res => { 
+           
+            setWallet_item(res.data);
+        })
+        .catch(err => {console.log(err)}); 
+    }
+    useEffect(() => {
+        fetchData();
     }, []);   
     if(wallet_item.length!= 0){
     return (

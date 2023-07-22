@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { Image } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Feather, FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
@@ -11,10 +11,21 @@ import BookingPage from '../screens/dashboard/booking';
 import InvoicingPage from '../screens/dashboard/invoices';
 import MessagingPage from '../screens/dashboard/messages';
 import WalletPage from '../screens/dashboard/wallet';
-
+import axios from "axios";
+import Api from "../ApiUrl";
 const Drawer = createDrawerNavigator();
 
 function DrawerMenu() {
+    // require('../assets/images/homey_logo.png')
+    const [sitelogo, setSitelogo] = useState();
+  useEffect(() => {
+    axios.get((Api.api_url)+"wp-json/jwt-auth/v1/site-logo/logo")
+    .then(res => {
+        setSitelogo(res.data);
+    })
+    .catch(err => {console.log(err)}); 
+}, []);
+ 
     return (
         <Drawer.Navigator
             drawerContent={(props) => <Sidebar {...props} />}
@@ -27,7 +38,7 @@ function DrawerMenu() {
                 options={{
                     drawerIcon: () => <FontAwesome name='home' size={24} />,
                     headerTitleAlign: 'center',
-                    headerTitle: () => <Image style={{ width: 130, height: 50 }} source={require('../assets/images/logo.png')} />
+                    headerTitle: () => <Image style={{resizeMode: 'contain', width: 130, height: 50 }} source={require('../assets/images/homey_logo.png')} />
                 }}
             />
             <Drawer.Screen
@@ -44,13 +55,13 @@ function DrawerMenu() {
                     drawerIcon: () => <MaterialIcons name="apartment" size={24} color="black" />
                 }}
             />
-            <Drawer.Screen
+            {/* <Drawer.Screen
                 name="Booking"
                 component={BookingPage}
                 options={{
                     drawerIcon: () => <MaterialIcons name="apartment" size={24} color="black" />
                 }}
-            /> 
+            />  */}
             <Drawer.Screen
                 name="Invoices"
                 component={InvoicingPage}

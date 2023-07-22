@@ -7,6 +7,22 @@ import Api from "../../../../ApiUrl";
 import * as SecureStore from 'expo-secure-store';
 
 const ReservationDetailPage = (props ) => {
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+          let fetchData: any;
+          let fetchname: any;
+          try {
+              fetchData = await SecureStore.getItemAsync('userid');
+              global.userid = fetchData;
+              fetchname = await SecureStore.getItemAsync('username');
+              global.username= fetchname;
+          } catch (e) {
+          }
+    
+    
+      };
+      bootstrapAsync();
+    }, [ ]); 
     const [reserv, setReserv] = useState();
     const post_id= props.route.params.itemId;
     axios.get((Api.api_url)+"wp-json/jwt-auth/v1/profile/rservation_detail?reservation_detail="+post_id+"&user_id="+global.userid )

@@ -1,14 +1,29 @@
-import React from "react";
+import React,{useState} from "react";
 import { StyleSheet, View, Text, TextInput, Dimensions, TouchableOpacity } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import Colors from "../../../constants/Colors";
 
 
-const StartBooking = (props) => {
+const StartBooking = ({ firstName,lastName,email }) => {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = (data: any) => {
         console.log(data);
     }
+    const [fnameValue, setfnameValue] = useState('');
+    const handlefname = (value) => {
+    setfnameValue(value);
+    firstName(value); // Pass the value to the parent component
+    };
+    const [lnameValue, setlnameValue] = useState('');
+    const handlelname = (value) => {
+        setlnameValue(value);
+    lastName(value); // Pass the value to the parent component
+    };
+        const [emailValue, setemailValue] = useState('');
+        const handleemail = (value) => {
+            setemailValue(value);
+            email(value); // Pass the value to the parent component
+        };
     return (
         <View style={ styles.container }>
             <View style={ styles.form }>
@@ -31,8 +46,8 @@ const StartBooking = (props) => {
                                 placeholder="Enter your first name"
                                 style={styles.textInput}
                                 onBlur={onBlur}
-                                onChangeText={onChange}
-                                value={value}
+                                onChangeText={handlefname}
+                                value={fnameValue}
                             />
                         )}
                         name="firstname"
@@ -51,8 +66,8 @@ const StartBooking = (props) => {
                                 placeholder="Enter your last name"
                                 style={styles.textInput}
                                 onBlur={onBlur}
-                                onChangeText={onChange}
-                                value={value}
+                                onChangeText={handlelname}
+                                value={lnameValue}
                             />
                         )}
                         name="lastname"
@@ -60,7 +75,7 @@ const StartBooking = (props) => {
                     />
 
                     <View style={ styles.space } />
-                    <Text>Phone Number</Text>
+                    <Text>Email</Text>
                     <Controller
                         control={control}
                         rules={{
@@ -68,15 +83,15 @@ const StartBooking = (props) => {
                         }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextInput
-                                placeholder="Enter your phone number"
+                                placeholder="Enter your email"
                                 style={styles.textInput}
                                 onBlur={onBlur}
-                                onChangeText={onChange}
-                                value={value}
-                                keyboardType='phone-pad'
+                                onChangeText={handleemail}
+                                value={emailValue}
+                                keyboardType='email-address'
                             />
                         )}
-                        name="phonenumber"
+                        name="Email"
                         defaultValue=""
                     />
 

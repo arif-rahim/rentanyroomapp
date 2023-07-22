@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect,useState} from 'react';
 import { View, Text, Image,ActivityIndicator,SafeAreaView,StyleSheet,Dimensions } from 'react-native';
 import { FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import styles from '../../../../assets/styles/ProfileStyle';
@@ -7,6 +7,22 @@ import axios from "axios";
 import Api from "../../../../ApiUrl";
 
 const ProfileComplete = () => {
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+          let fetchData: any;
+          let fetchname: any;
+          try {
+              fetchData = await SecureStore.getItemAsync('userid');
+              global.userid = fetchData;
+              fetchname = await SecureStore.getItemAsync('username');
+              global.username= fetchname;
+          } catch (e) {
+          }
+    
+    
+      };
+      bootstrapAsync();
+    }, [ ]); 
     const keyword = {
         user_id: global.userid
     };

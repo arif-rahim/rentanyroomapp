@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { Image } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Feather, FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
@@ -13,11 +13,23 @@ import MessagingPage from '../screens/dashboard/messages';
 import WalletPage from '../screens/dashboard/wallet';
 import SignupScreen  from "../screens/auth/SignupScreen";
 import LoginScreen   from "../screens/auth/LoginScreen";
-import ListingDetail from "../screens/listing-detail";
 
+import ListingDetail from "../screens/listing-detail";
+import axios from "axios";
+import Api from "../ApiUrl";
 const Drawer = createDrawerNavigator();
 
 function SiteMenu() {
+
+    const [sitelogo, setSitelogo] = useState();
+    useEffect(() => {
+        axios.get((Api.api_url)+"wp-json/jwt-auth/v1/site-logo/logo")
+        .then(res => {
+            setSitelogo(res.data);
+        })
+        .catch(err => {console.log(err)}); 
+    }, []);
+    //source={require('../assets/images/homey_logo.png')}
     return (
         <Drawer.Navigator
             drawerContent={(props) => <Sidebar {...props} />}
@@ -30,7 +42,7 @@ function SiteMenu() {
                 options={{
                     drawerIcon: () => <FontAwesome name='home' size={24} />,
                     headerTitleAlign: 'center',
-                    headerTitle: () => <Image style={{ width: 130, height: 50 }} source={require('../assets/images/logo.png')} />
+                    headerTitle: () => <Image style={{resizeMode: 'contain', width: 130, height: 50 }}  source={require('../assets/images/homey_logo.png')}  />
                 }}
             />
             <Drawer.Screen

@@ -1,9 +1,8 @@
 import React, { useState,useEffect } from 'react';
-import { View, Text, Modal, StyleSheet, Alert, TextInput, Dimensions, TouchableOpacity,ActivityIndicator } from 'react-native';
+import { View, Text, Modal, StyleSheet,Button, Alert, TextInput, Dimensions, TouchableOpacity,ActivityIndicator,Platform } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import CalendarPicker from 'react-native-calendar-picker';
-import DateRangePicker from "react-native-daterange-picker";
 import { useForm, Controller } from 'react-hook-form';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from "axios";
 import Api from "../ApiUrl";
 import * as SecureStore from 'expo-secure-store';
@@ -12,51 +11,37 @@ import Moment from 'moment';
 
 const { width, height } = Dimensions.get('window');
 
-const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,data,instant_booking,offsite_payment}) => {
+async function sendPushNotification(expoPushToken) {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: 'You have a new reservation from',
+      body: global.username,
+      data: { someData: 1 },
+    };
+  
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+    
+  }
+
+const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,device_token,list_data,data,instant_booking,offsite_payment}) => {
     //console.log(instant_booking);
     const [selectedRange, setRange] = useState({});
-    const [start, setStartDate] = useState('');
-    const [end, setEndDate] = useState('');
     const [guestchange, setGuestchange] = useState('');
-    const [displayedDate, setDisplayedDate] = useState(Moment());
     const guest=''; 
-    const [selectedStartDate, setSelectedStartDate] = useState(null);
-    const [selectedEndDate, setSelectedEndDate] = useState(null);
-    const endDate= selectedEndDate ? selectedEndDate : ''
-    const startDate= selectedStartDate ? selectedStartDate : ''
-    const setDates = (dates) => {
-        
-        //     setEndDate(dates.endDate);
-        // setStartDate(dates.startDate);
-        
-        if (dates.endDate) {
-            setSelectedEndDate(dates.endDate);
-            setEndDate(Moment(dates.endDate).format('YYYY-MM-DD'));
-            const endD=Moment(dates.endDate).format('YYYY-MM-DD');
-            if(dates !== '') {
-                let n = new Date(endDate).getDate() - new Date(startDate).getDate()
-                if(n != 0) {
-                    get_data(start, endD,guest);
-                    setVisible(!visible);
-                    console.log(start,endD);
-                } else {
-                    Alert.alert('please choose another day')
-                }
-            }
-            
-          } else {
-            setSelectedEndDate(null);
-            setSelectedStartDate(dates.startDate);
-            setStartDate(Moment(dates.startDate).format('YYYY-MM-DD'))
-          }
-
-        
-      };
-    
-    // const onDateChange = (date, type) => {
-    //   //function to handle the date change
-      
-    // };
+    const [showFromPicker, setShowFromPicker] = useState(false);
+    const [showToPicker, setShowToPicker] = useState(false);
+    const [start, setFromDate] = useState(new Date());
+    const [end, setToDate] = useState(new Date());
+  
 
     const [isLoading, setLoading] = useState(false);
     const [loading, setisLoading] = useState(false);
@@ -67,11 +52,26 @@ const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,
     const [message, setMesg] = useState('');
     const [error, setError] = useState(false);
     const [total_price, setBookprice] = useState('');
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+          let fetchData: any;
+          let fetchname: any;
+          try {
+              fetchData = await SecureStore.getItemAsync('userid');
+              global.userid = fetchData;
+              fetchname = await SecureStore.getItemAsync('username');
+              global.username= fetchname;
+          } catch (e) {
+          }
     
+    
+      };
+      bootstrapAsync();
+    }, [ ]); 
    
     const onSubmit = (data : any) => {
         setisLoading(true);
-        
+       
         const keyword = {
             user_id: global.userid,
             listing_id: listing_id,
@@ -80,14 +80,15 @@ const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,
             guest_message: data.guest_message,
             guests: guestchange
         };
-        console.log(keyword);
+       
         axios.post((Api.api_url)+"wp-json/jwt-auth/v1/booking/booking_request", keyword )
             .then(res => {
                 
                 setBookmsg(res.data.message);
-                if(res.data.success){setError(res.data.success);}
+                if(res.data.success){setError(res.data.success); }
+                sendPushNotification(device_token);
+
                 setisLoading(false);
-               console.log(res.data);
 
             })
             .catch(err => {console.log(err)});
@@ -96,13 +97,15 @@ const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,
     
 
     function get_data(start:any ,end:any,guest:any): void{
+       
      if(end)   {
+        setMesg('');
+        setBookprice('');
         setGuestchange(guest);
         setLoading(true);
     axios.get((Api.api_url)+"wp-json/jwt-auth/v1/search/search_availability?listing_id="+data+"&check_in_date="+start+"&check_out_date="+end+"&guests=",guest )
     .then(res => {
         setLoading(false);
-        //console.log(res.data);
         if(res.data.booking_cost){setBookprice(res.data.booking_cost.total_price);}
         if(res.data.message){setMesg(res.data.message);}
         if(res.data.success){setError(res.data.success);}
@@ -110,7 +113,53 @@ const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,
         
     }).catch(err => {console.log(err)}); } }
 
-    return (
+//     const [mydate, setDate1] = useState(new Date());
+//    const [displaymode, setMode1] = useState('time');
+//    const [isDisplayDate, setShow1] = useState(false);
+//    const changeSelectedDate = (event, selectedDate) => {
+//       const currentDate = selectedDate || mydate;
+//       setDate1(currentDate);
+//       setShow1(false);
+//    };
+//    const showMode1 = (currentMode) => {
+//     setShow1(true);
+//       setMode1(currentMode);
+     
+//    };
+//     const displayTimepicker = () => { 
+//         showMode1('date');
+//      };
+
+
+
+  const showFromDatePicker = () => {
+    setShowFromPicker(true);
+  };
+
+  const showToDatePicker = () => {
+   
+    setShowToPicker(true);
+  };
+
+  const handleFromDateChange = (event, selectedDate) => {
+    
+    const currentDate = selectedDate; 
+    setFromDate(currentDate);
+    setShowFromPicker(false);
+    
+  };
+
+  const handleToDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    
+    setToDate(currentDate);
+    get_data(Moment(start).format('YYYY-MM-DD'),Moment(currentDate).format('YYYY-MM-DD'),guest);
+    setShowToPicker(false);
+  }; 
+
+
+  
+return (
         <View style={styles.container}>
             <Modal
                 animationType="slide"
@@ -133,7 +182,9 @@ const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,
                     
                     <View style={styles.formFields}>
                         <View style={[ styles.searchBox, styles.row ]}>
+                       
                             <FontAwesome name="calendar-o" style={{ left: 30 }} size={24} color="lightgrey" />
+                            
                             {/* <TextInput value={start} style={[styles.searchInput]} placeholder='Arrive' onPressIn={() => {setVisible(true)}}  /> */}
                             <Controller
                                     control={control}
@@ -143,12 +194,13 @@ const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,
                                         <TextInput
                                             placeholder="Arrive"
                                             style={[styles.searchInput]}
-                                            onPressIn={() => {setVisible(true)}}
-                                            value={ start }
+                                            onPressIn={() => {showFromDatePicker()}}
+                                           
+                                            value={ start.toDateString() }
                                         />
                                     )}
-                                    name="check_in_date"
-                                    defaultValue={start}
+                                    name="check_in_date" 
+                                    defaultValue=''
                                 />
                         </View>
                         <View style={[ styles.searchBox, styles.row ]}>
@@ -162,11 +214,12 @@ const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,
                                         <TextInput
                                             placeholder="Depart"
                                             style={[styles.searchInput]}
-                                            value={ end }
+                                            onPressIn={() => {showToDatePicker()}}
+                                            value={ end.toDateString() }
                                         />
                                     )}
                                     name="check_out_date"
-                                    defaultValue={ end }
+                                    defaultValue=''
                                 />
                         </View>
                         <View style={[ styles.searchBox, styles.row ]}>
@@ -224,12 +277,12 @@ const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,
                                 
                                 <Text style={{  }}>View details</Text>
                             </View>
-
+ 
                         </View>
-                       {global.userid !=='' ? 
-                       instant_booking && offsite_payment == 1 ?
+                       {global.userid !=='' ?   
+                       instant_booking == 1 && offsite_payment == 0 ?
                        <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('InstantBookingForm',
-                       { itemId: data,start: start,end: end,guestchange: guestchange}) }}>
+                       {list_data:list_data, itemId: data,start: start,end: end,guestchange: guestchange,total_price: total_price}) }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Instant Booking</Text>
                         </TouchableOpacity> : <TouchableOpacity style={[ styles.button ]} onPress={handleSubmit(onSubmit)}>
                             <Text style={[ styles.buttonText, { color: 'white', fontWeight: 'bold' } ]}>Request to Book</Text>
@@ -240,51 +293,79 @@ const RequestToBookModal = ({ modalVisible = false, setModalVisible, navigation,
                     </TouchableOpacity>
                          }
                         <View style={styles.row}>
-                        
+                         
                         {loading ?
                 <View style={styles.loader}>
                     <ActivityIndicator size="large" color="#0c9" />
                 </View> : <Text style={{ color: 'green' }}>{book_msg} </Text>
             }
+                       
+
                     </View>
+                   
+                    {/* <TouchableOpacity
+        onPress={() =>}>
+        <Text>Hello Date</Text>
+      </TouchableOpacity> */}
                     </View>
+
+
                 </View>
+                {showFromPicker && (
+        <DateTimePicker
+          testID="fromDateTimePicker"
+          value={start}
+          minimumDate={new Date()}
+          mode="date"
+          display="default"
+          onChange={handleFromDateChange}
+        />
+      )}
+
+      {showToPicker && (
+        <DateTimePicker
+          testID="toDateTimePicker"
+          value={end}
+          minimumDate={start ? new Date(start) : end ? new Date(start) : undefined}
+          mode="date"
+          display="default"
+          onChange={handleToDateChange}
+        />
+      )}
+
+      {/* Render the selected dates */}
+      
+              
                 
+              {/* {isDisplayDate &&  <DateTimePicker 
+           value={date}
+           mode={'date'}
+           minimumDate={checkstart ? new Date(start) : checkend ? new Date(start) : undefined}
+           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+           is24Hour={true}
+           onChange={onChange}
+         /> } */}
+ 
             </Modal>
-            <Modal
+            {/* <Modal
                 animationType="slide"
                 visible={visible}
                 onRequestClose={() => {
                     setVisible(!visible);
                 }}
-            >
-                <DateRangePicker
-                
-                onChange={setDates}
-        //   onChange={({ startDate, endDate }) => {
-        //     const msdate=Moment(startDate).format('d-MM-y');
-        //     const medate=Moment(endDate).format('d-m-y');
-        //     setStartDate(startDate)
-        //     setEndDate(endDate)
-        //     console.log({ msdate })
-        //     if(endDate !== null) {
-        //         let n = new Date(endDate).getDate() - new Date(startDate).getDate()
-        //         if(n != 0) {
-        //            // setVisible(!visible);
-        //         } else {
-        //             Alert.alert('please choose another day')
-        //         }
-        //     }
-        // }}
-        open
-        endDate={endDate}
-        startDate={startDate}
-        displayedDate={displayedDate}
-        range
-        >
-        </DateRangePicker>
+                style={{backgroundColor: '#f15e75' }}
+            > 
+          <Text style={[ styles.buttonText, { color: 'black', fontWeight: 'bold' } ]}>Request to Book</Text>
+          <DateTimePicker 
+           value={date}
+           mode={'date'}
+           minimumDate={checkstart ? new Date(start) : checkend ? new Date(start) : undefined}
+           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+           is24Hour={true}
+           onChange={onChange}
+         />  
               
-            </Modal>
+            </Modal> */}
         </View>
     );
 }

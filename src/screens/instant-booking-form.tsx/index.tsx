@@ -7,7 +7,7 @@ import StartBooking from "./components/StartBooking";
  
  
 const InstantBookingForm = (props) => {
-    const bookDetail= props.route.params;
+    const bookDetail= props.route.params.list_data;
     return (
         <SafeAreaView style={ styles.container }>
             <ScrollView style={{ width: Dimensions.get('screen').width }}>

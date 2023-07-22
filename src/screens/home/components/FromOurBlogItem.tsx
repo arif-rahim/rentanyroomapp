@@ -1,15 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions,TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Colors from '../../../constants/Colors';
 
-
+import { useNavigation } from '@react-navigation/native';
 const { width, height } = Dimensions.get('window');
 
-
+ 
 const FromOurBlogItem = ({ item }) => {
+    const navigation = useNavigation();
+    console.log(item.id);
     return (
         <View style={styles.container}>
+             <TouchableOpacity onPress={() => {  navigation.navigate('BlofgDetailPage', { itemId:item.id});}}>
             <View style={styles.card} key={item.ID }>
                 <Image style={styles.blogImage} source={{ uri: item.url }} />
 
@@ -34,6 +37,7 @@ const FromOurBlogItem = ({ item }) => {
                     </View>
                 </View>
             </View>
+            </TouchableOpacity>
         </View>
     );
 }
